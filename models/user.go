@@ -45,7 +45,7 @@ func RandomUser() *User {
 	count := 0
 	ORM().Table("users").Count(&count)
 	rand.Seed(time.Now().UnixNano())
-	randNum := rand.Intn(count) - 1
+	randNum := rand.Intn(count)
 	ORM().Table("users").Offset(randNum).First(user)
 	return user
 }
