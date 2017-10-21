@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"app/controllers"
+	"github.com/lifeisgo/shrimptalk/controllers"
 
 	"github.com/astaxie/beego"
 )
