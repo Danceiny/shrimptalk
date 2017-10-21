@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"net/http"
+
 	"github.com/astaxie/beego"
 	"github.com/lifeisgo/shrimptalk/models"
 )
@@ -20,10 +22,17 @@ func (c *LoginController) Get() {
 		return
 	}
 	if l, b := s.Get("login").(string); b && l == user.ID.String() {
-		c.Ctx.WriteString(id + " 已经登录!")
+		//c.Ctx.WriteString(id + " 已经登录!")
+		c.Ctx.Redirect(http.StatusFound, "/success")
 		return
 	}
 
 	s.Set("login", user.ID.String())
-	c.Ctx.WriteString("登陆中 " + id + " !")
+	//c.Ctx.WriteString("登陆中 " + id + " !")
+	c.Data["ID"] = id
+	c.Ctx.Redirect(http.StatusFound, "/success")
+}
+
+func (c *LoginController) Success() {
+
 }

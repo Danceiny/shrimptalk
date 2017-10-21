@@ -42,10 +42,14 @@ func (c *TalkController) FindAll() {
 func (c *TalkController) New() {
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
 	defer s.SessionRelease(c.Ctx.ResponseWriter)
-	id := s.Get("login")
-	user := models.FindUser(id.(string))
+	id, b := s.Get("login").(string)
+	if !b {
+		c.Ctx.Redirect(http.StatusFound, "/")
+		return
+	}
+	user := models.FindUser(id)
 	if user.IsNil() {
-		c.Ctx.Redirect(http.StatusOK, "/")
+		c.Ctx.Redirect(http.StatusFound, "/")
 	}
 
 	c.Data["NickName"] = user.NickNameHex
@@ -57,14 +61,14 @@ func (c *TalkController) PostNew() {
 	id := s.Get("login").(string)
 	user := models.FindUser(id)
 	if user.IsNil() {
-		c.Ctx.Redirect(http.StatusOK, "/")
+		c.Ctx.Redirect(http.StatusFound, "/")
 	}
 
 	detail := c.GetString("detail")
 
 	talk := models.NewTalk()
 	talk.UserID = uuid.FromStringOrNil(id)
-	talk.TalkNameHex = user.NickNameHex
+	//talk.TalkNameHex = user.NickNameHex
 	talk.Now = models.RandomUser().ID
 	talk.AddComment(user.NickNameHex, detail)
 	talk.Create()

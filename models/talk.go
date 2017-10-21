@@ -30,7 +30,7 @@ func init() {
 func NewTalk() *Talk {
 	talk := new(Talk)
 	talk.Max = 0
-	talk.TalkNameHex = GenerateHexID()
+	talk.TalkNameHex = GenerateRandomString(32)
 	return talk
 }
 

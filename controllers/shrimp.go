@@ -35,9 +35,7 @@ func (c *MainController) Get() {
 func (c *MainController) All() {
 	tlist := []models.Talk{}
 	models.ORM().Table("talks").Find(&tlist).Order("by max desc")
-	//for _, v := range tlist {
-	//	c.Ctx.WriteString(v.ToString())
-	//}
+
 	c.Data["Talk"] = tlist
-	c.TplName = "talk_all.tpl"
+
 }
