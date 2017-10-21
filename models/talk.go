@@ -9,7 +9,7 @@ import (
 type Talk struct {
 	Base
 	TalkNameHex   string
-	Now           uuid.UUID `gorm:"primary_key;type:varchar(36)"`
+	Now           uuid.UUID `gorm:"type:varchar(36)"`
 	Max           int
 	DetailIndex   string `gorm:"type:varchar(2048)"`
 	CommentDetail string `gorm:"type:varchar(4096)"`
@@ -18,6 +18,10 @@ type Talk struct {
 type CommentDetail struct {
 	NickName string
 	Comment  string
+}
+
+func init() {
+	SetMigrate(Talk{})
 }
 
 func NewTalk() *Talk {
@@ -30,7 +34,7 @@ func NewTalk() *Talk {
 func (t *Talk) AddComment(name string, comment string) {
 	t.Max += 1
 	t.DetailIndex = AddIndex(t.DetailIndex, t.Max, name)
-	t.CommentDetail = AddDetail(t.CommentDetail, name, comment)
+	t.CommentDetail = AddDetail(t.CommentDetail, t.Max, comment)
 }
 
 func AddIndex(detail string, max int, name string) string {
@@ -46,13 +50,14 @@ func AddIndex(detail string, max int, name string) string {
 	return string(v)
 }
 
-func AddDetail(detail, name, comment string) string {
-	di := map[string]string{}
+func AddDetail(detail string, max int, comment string) string {
+	di := map[int]string{}
 	err := json.Unmarshal([]byte(detail), &di)
+	max -= 1
 	if err == nil {
-		di[name] = comment
+		di[max] = comment
 	} else {
-		di = map[string]string{name: comment}
+		di = map[int]string{max: comment}
 	}
 	v, _ := json.Marshal(di)
 	return string(v)
@@ -60,13 +65,13 @@ func AddDetail(detail, name, comment string) string {
 
 func (t *Talk) ToComment() []CommentDetail {
 	di := map[int]string{}
-	cd := map[string]string{}
+	cd := map[int]string{}
 	json.Unmarshal([]byte(t.DetailIndex), &di)
 	json.Unmarshal([]byte(t.CommentDetail), &cd)
 	cdArr := []CommentDetail{}
 	for i := 0; i < t.Max; i++ {
 		if name, b := di[i]; b {
-			if detail, b := cd[name]; b {
+			if detail, b := cd[i]; b {
 				cdArr = append(cdArr, CommentDetail{name, detail})
 			}
 		}
