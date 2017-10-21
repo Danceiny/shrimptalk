@@ -40,3 +40,4 @@ func (c *MainController) All() {
 	//}
 	c.Data["Talk"] = tlist
 	c.TplName = "talk_all.tpl"
+}

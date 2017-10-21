@@ -1,4 +1,4 @@
-<table border="1">
+<table border="0">
   <tr>
     <th>TalkName</th>
     <th>User</th>

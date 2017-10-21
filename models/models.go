@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/astaxie/beego/session"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/satori/go.uuid"
@@ -21,8 +22,9 @@ type Base struct {
 type DB = gorm.DB
 
 var (
-	db      *DB
-	migrate = []interface{}{}
+	db             *DB
+	globalSessions *session.Manager
+	migrate        = []interface{}{}
 )
 
 func init() {
@@ -56,6 +58,13 @@ func ORM() *DB {
 	return db
 }
 
+func Session() *session.Manager {
+	if globalSessions == nil {
+		globalSessions = NewSession()
+	}
+	return globalSessions
+}
+
 func SetMigrate(table interface{}) {
 	migrate = append(migrate, table)
 
@@ -76,4 +85,19 @@ func GenerateHexID() string {
 	s = strings.Replace(s, "-", "", -1)
 	run := ([]rune)(s)[:32]
 	return string(run)
+}
+
+func NewSession() *session.Manager {
+	sessionConfig := &session.ManagerConfig{
+		CookieName:      "SessionID",
+		EnableSetCookie: true,
+		Gclifetime:      3600,
+		Maxlifetime:     3600,
+		Secure:          false,
+		CookieLifeTime:  3600,
+		ProviderConfig:  "./tmp",
+	}
+	globalSessions, _ = session.NewManager("memory", sessionConfig)
+	go globalSessions.GC()
+	return globalSessions
 }
