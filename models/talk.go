@@ -96,3 +96,7 @@ func (t *Talk) ToString() string {
 	}
 	return str
 }
+
+func (t *Talk) Create() error {
+	return ORM().Table("talks").Create(t).Error
+}

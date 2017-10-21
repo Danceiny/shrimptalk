@@ -13,8 +13,8 @@ func (c *LoginController) Get() {
 	id := c.Ctx.Input.Param(":id")
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
 	defer s.SessionRelease(c.Ctx.ResponseWriter)
-	user := models.User{}
-	models.ORM().Where("nick_name_hex = ?", id).Find(&user)
+	user := models.FindUserByHex(id)
+
 	if user.IsNil() {
 		c.Ctx.WriteString("用户不存在!")
 		return
