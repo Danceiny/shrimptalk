@@ -22,7 +22,7 @@ func TestTalk_AddComment(t *testing.T) {
 	//tk := models.NewTalk()
 	tk := new(models.Talk)
 	tk2 := new(models.Talk)
-	tk.TalkNameHex = "5a61c55ab62a11e78494da1584770d13"
+	tk.TalkNameHex = "5a61c55ab62a11e78494da1584770d14"
 	models.ORM().Where(tk).FirstOrInit(tk2)
 	log.Println(tk2)
 	tk2.AddComment("hello", "world")
