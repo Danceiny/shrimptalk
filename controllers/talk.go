@@ -50,6 +50,7 @@ func (c *TalkController) New() {
 	user := models.FindUser(id)
 	if user.IsNil() {
 		c.Ctx.Redirect(http.StatusFound, "/")
+		return
 	}
 
 	c.Data["NickName"] = user.NickNameHex
@@ -58,10 +59,15 @@ func (c *TalkController) New() {
 func (c *TalkController) PostNew() {
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
 	defer s.SessionRelease(c.Ctx.ResponseWriter)
-	id := s.Get("login").(string)
+	id, b := s.Get("login").(string)
+	if !b {
+		c.Ctx.Redirect(http.StatusFound, "/")
+		return
+	}
 	user := models.FindUser(id)
 	if user.IsNil() {
 		c.Ctx.Redirect(http.StatusFound, "/")
+		return
 	}
 
 	detail := c.GetString("detail")
