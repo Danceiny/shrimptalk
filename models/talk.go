@@ -10,6 +10,7 @@ import (
 
 type Talk struct {
 	Base
+	UserID        uuid.UUID `gorm:"type:varchar(36)"`
 	TalkNameHex   string    //talk主题
 	Now           uuid.UUID `gorm:"type:varchar(36)"`
 	Max           int
