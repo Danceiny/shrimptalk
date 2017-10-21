@@ -1,6 +1,10 @@
 package controllers
 
-import "github.com/astaxie/beego"
+import (
+	"fmt"
+
+	"github.com/astaxie/beego"
+)
 
 type TalkController struct {
 	beego.Controller
@@ -15,4 +19,16 @@ func (c *TalkController) Talk() {
 	c.Ctx.WriteString("talk:")
 	c.Ctx.WriteString(c.Ctx.Input.Param(":talk"))
 
+}
+
+func (c *TalkController) FindAll() {
+	fmt.Println("findallgaoqiankun")
+
+	defer c.ServeJSON()
+	c.Data["json"] = map[string]interface{}{
+		"message": "ok",
+		"data": map[string]interface{}{
+			"data": "hao",
+		},
+	}
 }
