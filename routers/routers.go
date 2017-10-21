@@ -11,5 +11,7 @@ func init() {
 	beego.Router("/register", &controllers.UserController{}, "post:Register")
 	beego.Router("/all", &controllers.MainController{}, "get:All")
 	beego.Router("/:id/talk/:talk", &controllers.TalkController{}, "get:Talk")
+	beego.Router("/new", &controllers.TalkController{}, "get:New")
+	beego.Router("/:id/new", &controllers.TalkController{}, "post:PostNew")
 	beego.Router("/login/:id", &controllers.LoginController{})
 }
