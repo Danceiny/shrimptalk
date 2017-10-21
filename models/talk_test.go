@@ -5,7 +5,7 @@ import (
 
 	"log"
 
-	"github.com/godcong/shrimptalk/models"
+	"github.com/lifeisgo/shrimptalk/models"
 )
 
 func TestAddDetail(t *testing.T) {
