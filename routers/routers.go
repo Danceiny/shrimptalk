@@ -10,7 +10,8 @@ func init() {
 	//beego.Router("/", &controllers.MainController{})
 	beego.Router("/register", &controllers.UserController{}, "get:Register")
 	beego.Router("/all", &controllers.MainController{}, "get:All")
-	beego.Router("/:id/talk/:talk", &controllers.TalkController{}, "get:Talk")
+	//beego.Router("/:id/talk/:talk", &controllers.TalkController{}, "get:Talk")
+	//	beego.Router("/talk/:id", &controllers.TalkController{}, "get:Detail") //s
 	beego.Router("/new", &controllers.TalkController{}, "get:New")
 	beego.Router("/:id/new", &controllers.TalkController{}, "post:PostNew")
 	beego.Router("/login/:id", &controllers.LoginController{})
@@ -21,6 +22,7 @@ func init() {
 		// 查找所有 list
 		beego.NSRouter("/findall", &controllers.TalkController{}, "get:FindMyTalk"),
 		beego.NSRouter("/mytalk", &controllers.TalkController{}, "get:FindNowTalk"),
+		beego.NSRouter("/:id", &controllers.TalkController{}, "get:Detail"),
 	)
 	//注册 namespace
 	beego.AddNamespace(ns)

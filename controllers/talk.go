@@ -7,6 +7,8 @@ import (
 
 	"net/http"
 
+	"log"
+
 	"github.com/lifeisgo/shrimptalk/models"
 	"github.com/satori/go.uuid"
 )
@@ -30,7 +32,7 @@ func (c *TalkController) Talk() {
 }
 
 func (c *TalkController) FindMyTalk() {
-	fmt.Println("findallgaoqiankun")
+	fmt.Println("高乾坤")
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
 	defer s.SessionRelease(c.Ctx.ResponseWriter)
 	id := s.Get("login").(string)
@@ -43,7 +45,7 @@ func (c *TalkController) FindMyTalk() {
 
 func (c *TalkController) FindNowTalk() {
 
-	fmt.Println("findnowtalk")
+	fmt.Println("我收到的")
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
 	defer s.SessionRelease(c.Ctx.ResponseWriter)
 	id := s.Get("login").(string)
@@ -94,9 +96,14 @@ func (c *TalkController) PostNew() {
 	talk.Now = models.RandomUser().ID
 	talk.AddComment(user.NickNameHex, detail)
 	talk.Create()
-	//	c.Ctx.WriteString("")
-
 	c.Ctx.Redirect(http.StatusFound, "/success")
 	return
 
+}
+
+func (c *TalkController) Detail() {
+	id := c.Ctx.Input.Param(":id")
+	talk := models.FindTalkByHex(id)
+	log.Println(talk.ToString())
+	c.Ctx.WriteString(talk.ToString())
 }

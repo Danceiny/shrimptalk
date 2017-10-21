@@ -114,3 +114,10 @@ func (t *Talk) ToString() string {
 func (t *Talk) Create() error {
 	return ORM().Table("talks").Create(t).Error
 }
+
+func FindTalkByHex(uuid string) *Talk {
+	talk := new(Talk)
+	ORM().Table("talks").Where("talk_name_hex = ?", uuid).First(talk)
+	return talk
+
+}
