@@ -35,7 +35,6 @@ func (c *MainController) Get() {
 func (c *MainController) All() {
 	tlist := []models.Talk{}
 	models.ORM().Table("talks").Find(&tlist).Order("by max desc")
-
 	c.Data["Talk"] = tlist
 
 }

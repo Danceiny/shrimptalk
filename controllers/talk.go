@@ -19,6 +19,7 @@ func (c *TalkController) URLMapping() {
 	c.Mapping("Talk", c.Talk)
 	c.Mapping("New", c.New)
 	c.Mapping("PostNew", c.PostNew)
+
 }
 
 func (c *TalkController) Talk() {
@@ -28,17 +29,32 @@ func (c *TalkController) Talk() {
 
 }
 
-func (c *TalkController) FindAll() {
+func (c *TalkController) FindMyTalk() {
 	fmt.Println("findallgaoqiankun")
+	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
+	defer s.SessionRelease(c.Ctx.ResponseWriter)
+	id := s.Get("login").(string)
 
-	defer c.ServeJSON()
-	c.Data["json"] = map[string]interface{}{
-		"message": "ok",
-		"data": map[string]interface{}{
-			"data": "hao",
-		},
-	}
+	talks := models.FindAllTalk(id)
+
+	c.Data["Talks"] = talks
+
 }
+
+func (c *TalkController) FindNowTalk() {
+
+	fmt.Println("findnowtalk")
+	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
+	defer s.SessionRelease(c.Ctx.ResponseWriter)
+	id := s.Get("login").(string)
+	//	id := "b5712894-b640-11e7-a2bd-acbc32a50041"
+	//	user := models.FindUser(id)
+	mytalks := models.FindByNow(id)
+	//	mytalks := models.FindByNow("8ea685af-b649-11e7-ac6e-acbc32a50041")
+	c.Data["Talks"] = mytalks
+
+}
+
 func (c *TalkController) New() {
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
 	defer s.SessionRelease(c.Ctx.ResponseWriter)
@@ -78,7 +94,9 @@ func (c *TalkController) PostNew() {
 	talk.Now = models.RandomUser().ID
 	talk.AddComment(user.NickNameHex, detail)
 	talk.Create()
-	c.Ctx.WriteString("")
+	//	c.Ctx.WriteString("")
+
+	c.Ctx.Redirect(http.StatusFound, "/success")
 	return
 
 }

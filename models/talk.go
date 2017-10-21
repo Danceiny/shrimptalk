@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 
+	"fmt"
 	"strings"
 
 	"github.com/satori/go.uuid"
@@ -81,7 +82,19 @@ func (t *Talk) ToComment() []CommentDetail {
 	}
 	return cdArr
 }
+func FindAllTalk(id string) []Talk {
+	talks := []Talk{}
+	err := ORM().Where("user_id = ?", id).Find(&talks).Error
+	fmt.Println("err:", err)
+	return talks
+}
 
+func FindByNow(now string) []Talk {
+	talks := []Talk{}
+	err := ORM().Where("now = ?", now).Find(&talks).Error
+	fmt.Println("err:", err)
+	return talks
+}
 func (t *Talk) ToString() string {
 	di := map[int]string{}
 	cd := map[int]string{}

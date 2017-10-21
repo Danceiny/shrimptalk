@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	//	"net/http"
 
 	"github.com/astaxie/beego"
 	"github.com/lifeisgo/shrimptalk/models"
@@ -27,15 +28,8 @@ func (c *UserController) Get() {
 
 }
 func (c *UserController) Register() {
-	defer c.ServeJSON()
 	user := models.NewUser()
 	models.AddUser(user)
-	c.Data["json"] = map[string]interface{}{
-		"ok": true,
-
-		"data": map[string]interface{}{
-			"message":     "恭喜你注册成功",
-			"nicknamehex": user.NickNameHex,
-		},
-	}
+	c.Ctx.WriteString("恭喜你注册成功！！！！")
+	//	c.Ctx.Redirect(http.StatusFound, "/")
 }
