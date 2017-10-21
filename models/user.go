@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -19,4 +20,9 @@ func NewUser() *User {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 	return user
+}
+
+func AddUser(u *User) {
+	err := db.Create(u).Error
+	fmt.Println("err:", err)
 }

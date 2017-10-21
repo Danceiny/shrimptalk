@@ -4,19 +4,14 @@ import (
 	"fmt"
 
 	"github.com/astaxie/beego"
-
 	"github.com/lifeisgo/shrimptalk/models"
 )
 
-type MainController struct {
+type UserController struct {
 	beego.Controller
 }
 
-func (c *MainController) URLMapping() {
-	c.Mapping("All", c.All)
-}
-
-func (c *MainController) Get() {
+func (c *UserController) Get() {
 	//	c.Data["Website"] = "beego.me"
 	//	c.Data["Email"] = "astaxie@gmail.com"
 	//	c.TplName = "index.tpl"
@@ -31,13 +26,16 @@ func (c *MainController) Get() {
 			"password": "账号密码为:"}}
 
 }
+func (c *UserController) Register() {
+	defer c.ServeJSON()
+	user := models.NewUser()
+	models.AddUser(user)
+	c.Data["json"] = map[string]interface{}{
+		"ok": true,
 
-func (c *MainController) All() {
-	tlist := []models.Talk{}
-	models.ORM().Table("talks").Find(&tlist).Order("by max desc")
-	//for _, v := range tlist {
-	//	c.Ctx.WriteString(v.ToString())
-	//}
-	c.Data["Talk"] = tlist
-	c.TplName = "talk_all.tpl"
+		"data": map[string]interface{}{
+			"message":     "恭喜你注册成功",
+			"nicknamehex": user.NickNameHex,
+		},
+	}
 }
