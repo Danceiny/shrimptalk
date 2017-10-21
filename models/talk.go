@@ -15,10 +15,10 @@ type Talk struct {
 	CommentDetail string `gorm:"type:varchar(4096)"`
 }
 
-//type CommentIndex struct {
-//	Index    int
-//	NickName string
-//}
+type CommentDetail struct {
+	NickName string
+	Comment  string
+}
 
 func NewTalk() *Talk {
 	talk := new(Talk)
@@ -36,7 +36,6 @@ func (t *Talk) AddComment(name string, comment string) {
 func AddIndex(detail string, max int, name string) string {
 	di := map[int]string{}
 	err := json.Unmarshal([]byte(detail), &di)
-	//maxStr := strconv.FormatInt(int64(max-1), 10)
 	max -= 1
 	if err == nil {
 		di[max] = name
@@ -57,4 +56,20 @@ func AddDetail(detail, name, comment string) string {
 	}
 	v, _ := json.Marshal(di)
 	return string(v)
+}
+
+func (t *Talk) ToComment() []CommentDetail {
+	di := map[int]string{}
+	cd := map[string]string{}
+	json.Unmarshal([]byte(t.DetailIndex), &di)
+	json.Unmarshal([]byte(t.CommentDetail), &cd)
+	cdArr := []CommentDetail{}
+	for i := 0; i < t.Max; i++ {
+		if name, b := di[i]; b {
+			if detail, b := cd[name]; b {
+				cdArr = append(cdArr, CommentDetail{name, detail})
+			}
+		}
+	}
+	return cdArr
 }
