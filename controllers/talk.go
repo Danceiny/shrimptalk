@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/lifeisgo/shrimptalk/models"
+	"github.com/satori/go.uuid"
 )
 
 type TalkController struct {
@@ -53,14 +54,16 @@ func (c *TalkController) New() {
 func (c *TalkController) PostNew() {
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
 	defer s.SessionRelease(c.Ctx.ResponseWriter)
-	id := s.Get("login")
-	user := models.FindUser(id.(string))
+	id := s.Get("login").(string)
+	user := models.FindUser(id)
 	if user.IsNil() {
 		c.Ctx.Redirect(http.StatusOK, "/")
 	}
 
 	detail := c.GetString("detail")
+
 	talk := models.NewTalk()
+	talk.UserID = uuid.FromStringOrNil(id)
 	talk.TalkNameHex = user.NickNameHex
 	talk.Now = models.RandomUser().ID
 	talk.AddComment(user.NickNameHex, detail)
