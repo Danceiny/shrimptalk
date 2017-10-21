@@ -3,8 +3,6 @@ package models
 import (
 	"encoding/json"
 
-	"log"
-
 	"github.com/satori/go.uuid"
 )
 
@@ -29,17 +27,34 @@ func NewTalk() *Talk {
 	return talk
 }
 
-func (t *Talk) AddComment(name string, comment string) string {
+func (t *Talk) AddComment(name string, comment string) {
 	t.Max += 1
-	return Add(t.DetailIndex, name, comment)
+	t.DetailIndex = AddIndex(t.DetailIndex, t.Max, name)
+	t.CommentDetail = AddDetail(t.CommentDetail, name, comment)
 }
 
-func Add(detail, name, comment string) string {
-
+func AddIndex(detail string, max int, name string) string {
 	di := map[int]string{}
 	err := json.Unmarshal([]byte(detail), &di)
-	if err != nil {
-		log.Println(err)
+	//maxStr := strconv.FormatInt(int64(max-1), 10)
+	max -= 1
+	if err == nil {
+		di[max] = name
+	} else {
+		di = map[int]string{max: name}
 	}
 	v, _ := json.Marshal(di)
+	return string(v)
+}
+
+func AddDetail(detail, name, comment string) string {
+	di := map[string]string{}
+	err := json.Unmarshal([]byte(detail), &di)
+	if err == nil {
+		di[name] = comment
+	} else {
+		di = map[string]string{name: comment}
+	}
+	v, _ := json.Marshal(di)
+	return string(v)
 }
