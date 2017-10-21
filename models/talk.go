@@ -3,6 +3,8 @@ package models
 import (
 	"encoding/json"
 
+	"strings"
+
 	"github.com/satori/go.uuid"
 )
 
@@ -77,4 +79,20 @@ func (t *Talk) ToComment() []CommentDetail {
 		}
 	}
 	return cdArr
+}
+
+func (t *Talk) ToString() string {
+	di := map[int]string{}
+	cd := map[int]string{}
+	json.Unmarshal([]byte(t.DetailIndex), &di)
+	json.Unmarshal([]byte(t.CommentDetail), &cd)
+	str := ""
+	for i := 0; i < t.Max; i++ {
+		if name, b := di[i]; b {
+			if detail, b := cd[i]; b {
+				str = str + "\n" + strings.Join([]string{name, detail}, ":")
+			}
+		}
+	}
+	return str
 }
