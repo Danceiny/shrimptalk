@@ -33,6 +33,10 @@ func (c *LoginController) Get() {
 	c.Ctx.Redirect(http.StatusFound, "/success")
 }
 
+func (c *LoginController) List() {
+	c.Data["Users"] = models.Users()
+}
+
 func (c *LoginController) Success() {
 
 }

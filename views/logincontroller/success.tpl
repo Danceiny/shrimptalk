@@ -1,14 +1,3 @@
-<table border="0">
-  <tr>
-    <th>TalkName</th>
-    <th>User</th>
-  </tr>
-  {{range .Talk}}
-  <tr>
-    <td><a rel="stylesheet" type="text/css" href="/talk/{{ .TalkNameHex}}" >{{ .TalkNameHex}} </a></td>
-    <td>{{ .Now }}</td>
-  </tr>
-  {{end}}
-</table>
-
-
+<a rel="stylesheet" type="text/css" href="/new" >New </a>
+<br/>
+<a rel="stylesheet" type="text/css" href="/all" >All </a>

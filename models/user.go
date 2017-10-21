@@ -49,3 +49,9 @@ func RandomUser() *User {
 	ORM().Table("users").Offset(randNum).First(user)
 	return user
 }
+
+func Users() []User {
+	users := []User{}
+	ORM().Table("users").Find(&users)
+	return users
+}
