@@ -3,8 +3,6 @@ package controllers
 import (
 	"net/http"
 
-	"log"
-
 	"github.com/astaxie/beego"
 	"github.com/lifeisgo/shrimptalk/models"
 )
@@ -47,8 +45,12 @@ func (c *TalkController) PostNew() {
 		c.Ctx.Redirect(http.StatusOK, "/")
 	}
 
-	c.Data["NickName"] = user.NickNameHex
-	log.Println("postnew")
-	c.Ctx.WriteString("new received")
-	c.StopRun()
+	detail := c.GetString("detail")
+	talk := models.NewTalk()
+	talk.TalkNameHex = user.NickNameHex
+	talk.Now = models.RandomUser().ID
+	talk.AddComment(user.NickNameHex, detail)
+	talk.Create()
+	c.Ctx.WriteString("")
+	return
 }
