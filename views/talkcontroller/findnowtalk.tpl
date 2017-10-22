@@ -4,7 +4,7 @@
   </tr>
   {{range .Talks}}
   <tr>
-    <td><a rel="stylesheet" type="text/css" href="/talk/mytalk" >{{ .TalkNameHex}} </td></a>
+    <td><a rel="stylesheet" type="text/css" href="/talk/answer" >{{ .TalkNameHex}} </td></a>
   </tr>
   {{end}}
 </table>

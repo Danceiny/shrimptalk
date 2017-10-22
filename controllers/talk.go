@@ -35,7 +35,11 @@ func (c *TalkController) FindMyTalk() {
 	fmt.Println("高乾坤")
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
 	defer s.SessionRelease(c.Ctx.ResponseWriter)
-	id := s.Get("login").(string)
+	id, b := s.Get("login").(string)
+	if !b {
+		c.Ctx.Redirect(http.StatusFound, "/")
+		return
+	}
 
 	talks := models.FindAllTalk(id)
 
@@ -48,7 +52,11 @@ func (c *TalkController) FindNowTalk() {
 	fmt.Println("我收到的")
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
 	defer s.SessionRelease(c.Ctx.ResponseWriter)
-	id := s.Get("login").(string)
+	id, b := s.Get("login").(string)
+	if !b {
+		c.Ctx.Redirect(http.StatusFound, "/")
+		return
+	}
 	//	id := "b5712894-b640-11e7-a2bd-acbc32a50041"
 	//	user := models.FindUser(id)
 	mytalks := models.FindByNow(id)
@@ -56,7 +64,27 @@ func (c *TalkController) FindNowTalk() {
 	c.Data["Talks"] = mytalks
 
 }
-
+func (c *TalkController) Answer() {
+	fmt.Println("answer!!!!")
+	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
+	defer s.SessionRelease(c.Ctx.ResponseWriter)
+	id, b := s.Get("login").(string)
+	if !b {
+		c.Ctx.Redirect(http.StatusFound, "/")
+		return
+	}
+	fmt.Println("id:", id)
+	user := models.FindUser(id)
+	if user.IsNil() {
+		c.Ctx.Redirect(http.StatusFound, "/")
+		return
+	}
+	c.Data["NickName"] = user.NickNameHex
+}
+func (c *TalkController) PostAnswer() {
+	fmt.Println("PostAnswer!!!!")
+	c.Ctx.WriteString("回答完毕！！")
+}
 func (c *TalkController) New() {
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
 	defer s.SessionRelease(c.Ctx.ResponseWriter)
