@@ -73,13 +73,19 @@ func (c *TalkController) Answer() {
 		c.Ctx.Redirect(http.StatusFound, "/")
 		return
 	}
-	fmt.Println("id:", id)
+	talkNameHex := c.Ctx.Input.Param(":id")
+	fmt.Println("id:", talkNameHex)
+
+	talk := models.FindByTalkNameHex(talkNameHex)
+	fmt.Println("talk:", talk.ToComment())
 	user := models.FindUser(id)
 	if user.IsNil() {
 		c.Ctx.Redirect(http.StatusFound, "/")
 		return
 	}
 	c.Data["NickName"] = user.NickNameHex
+	c.Data["talk"] = talk.ToComment()
+	//	c.Data["user"] = user
 }
 func (c *TalkController) PostAnswer() {
 	fmt.Println("回答ßßß!!!!")
@@ -103,12 +109,6 @@ func (c *TalkController) PostAnswer() {
 	tk2.AddComment(user.NickNameHex, detail)
 	tk2.Now = models.RandomUser().ID
 	models.ORM().Where(tk).Save(tk2)
-	//	talk := models.NewTalk()
-	//	talk.UserID = uuid.FromStringOrNil(id)
-	//	//talk.TalkNameHex = user.NickNameHex
-	//	talk.Now = models.RandomUser().ID
-	//	talk.AddComment(user.NickNameHex, detail)
-	//	talk.Create()
 	c.Ctx.Redirect(http.StatusFound, "/talk/mytalk")
 	//	fmt.Println("detail:", detail, id)
 	//	c.Ctx.WriteString(detail)

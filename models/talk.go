@@ -95,6 +95,14 @@ func FindByNow(now string) []Talk {
 	fmt.Println("err:", err)
 	return talks
 }
+
+func FindByTalkNameHex(hex string) Talk {
+	talk := Talk{}
+	err := ORM().Where("talk_name_hex = ?", hex).Find(&talk).Error
+	fmt.Println("err:", err)
+	return talk
+}
+
 func (t *Talk) ToString() string {
 	di := map[int]string{}
 	cd := map[int]string{}

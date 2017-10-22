@@ -3,7 +3,12 @@
 </br>
 </br>
 </br>
-  
+历史消息：<br/>
+  {{range .talk}}
+{{.Comment}}
+<br/>
+{{end}}
+<br/>
 <form action="{{.NickName}}/postanswer" method='POST'>
   <textarea name="detail" rows="16" cols="72">
 
