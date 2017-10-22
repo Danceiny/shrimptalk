@@ -107,9 +107,11 @@ func (c *TalkController) PostAnswer() {
 	tk.TalkNameHex = c.Ctx.Input.Param(":talkhex")
 	models.ORM().Where(tk).FirstOrInit(tk2)
 	tk2.AddComment(user.NickNameHex, detail)
-	tk2.Now = models.RandomUser().ID
+	next := models.RandomUser()
+	tk2.Now = next.ID
 	models.ORM().Where(tk).Save(tk2)
-	c.Ctx.Redirect(http.StatusFound, "/talk/mytalk")
+	c.Data["Next"] = next
+	//	c.Ctx.Redirect(http.StatusFound, "/talk/mytalk")
 	//	fmt.Println("detail:", detail, id)
 	//	c.Ctx.WriteString(detail)
 }
