@@ -7,6 +7,8 @@ import (
 
 	"net/http"
 
+	"log"
+
 	"github.com/lifeisgo/shrimptalk/models"
 	"github.com/satori/go.uuid"
 )
@@ -132,6 +134,8 @@ func (c *TalkController) PostNew() {
 func (c *TalkController) Detail() {
 	id := c.Ctx.Input.Param(":id")
 	talk := models.FindTalkByHex(id)
-	c.Ctx.WriteString(talk.ToString())
+	c.Data["Detail"] = talk.ToComment()
+	log.Println(talk)
+	//c.Ctx.WriteString(talk.ToString())
 	//c.Ctx.WriteString(`<a rel="stylesheet" type="text/css" href="/" >Go To Main</a>`)
 }
