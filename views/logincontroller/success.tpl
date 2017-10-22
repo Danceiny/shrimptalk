@@ -7,3 +7,7 @@
 <div>
 <a rel="stylesheet" type="text/css" href="/talk/mytalk" >The topics I received </a>
 </div>
+
+<div>
+<a rel="stylesheet" type="text/css" href="/" >Go To Main</a>
+</div>
