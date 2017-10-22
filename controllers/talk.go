@@ -154,7 +154,6 @@ func (c *TalkController) PostNew() {
 	talk.AddComment(user.NickNameHex, detail)
 	talk.Create()
 	c.Data["Next"] = next
-	c.Ctx.Redirect(http.StatusFound, "/success")
 	return
 
 }
