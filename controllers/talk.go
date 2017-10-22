@@ -7,8 +7,6 @@ import (
 
 	"net/http"
 
-	"log"
-
 	"github.com/lifeisgo/shrimptalk/models"
 	"github.com/satori/go.uuid"
 )
@@ -121,9 +119,11 @@ func (c *TalkController) PostNew() {
 	talk := models.NewTalk()
 	talk.UserID = uuid.FromStringOrNil(id)
 	//talk.TalkNameHex = user.NickNameHex
-	talk.Now = models.RandomUser().ID
+	next := models.RandomUser()
+	talk.Now = next.ID
 	talk.AddComment(user.NickNameHex, detail)
 	talk.Create()
+	c.Data["Next"] = next
 	c.Ctx.Redirect(http.StatusFound, "/success")
 	return
 
@@ -132,6 +132,6 @@ func (c *TalkController) PostNew() {
 func (c *TalkController) Detail() {
 	id := c.Ctx.Input.Param(":id")
 	talk := models.FindTalkByHex(id)
-	log.Println(talk.ToString())
 	c.Ctx.WriteString(talk.ToString())
+	//c.Ctx.WriteString(`<a rel="stylesheet" type="text/css" href="/" >Go To Main</a>`)
 }
