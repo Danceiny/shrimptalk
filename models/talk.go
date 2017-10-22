@@ -82,6 +82,7 @@ func (t *Talk) ToComment() []CommentDetail {
 	}
 	return cdArr
 }
+
 func FindAllTalk(id string) []Talk {
 	talks := []Talk{}
 	err := ORM().Where("user_id = ?", id).Find(&talks).Error
