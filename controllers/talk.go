@@ -153,6 +153,7 @@ func (c *TalkController) PostNew() {
 	talk.Now = next.ID
 	talk.AddComment(user.NickNameHex, detail)
 	talk.Create()
+	c.Data["Detail"] = detail
 	c.Data["Next"] = next
 	return
 
@@ -163,6 +164,6 @@ func (c *TalkController) Detail() {
 	talk := models.FindTalkByHex(id)
 	c.Data["Detail"] = talk.ToComment()
 	log.Println(talk)
-	//c.Ctx.WriteString(talk.ToString())
-	//c.Ctx.WriteString(`<a rel="stylesheet" type="text/css" href="/" >Go To Main</a>`)
+	user := models.FindUser(talk.Now.String())
+	c.Data["Next"] = user
 }

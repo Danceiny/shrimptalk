@@ -1,5 +1,7 @@
 <div class=form>
-信息已传达至： {{.Next.NickNameHex }}
+信息: {{.Detail}}
+</br>
+已传达至： {{.Next.NickNameHex }}
 </br>
 </br>
 </br>
