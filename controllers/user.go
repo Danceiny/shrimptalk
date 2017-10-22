@@ -30,6 +30,7 @@ func (c *UserController) Get() {
 func (c *UserController) Register() {
 	user := models.NewUser()
 	models.AddUser(user)
-	c.Ctx.WriteString("恭喜你注册成功！！！！")
+	message := "恭喜  " + user.NickNameHex + " 注册成功！！！！"
+	c.Ctx.WriteString(message)
 	//	c.Ctx.Redirect(http.StatusFound, "/")
 }
