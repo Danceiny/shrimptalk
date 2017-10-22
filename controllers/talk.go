@@ -82,8 +82,36 @@ func (c *TalkController) Answer() {
 	c.Data["NickName"] = user.NickNameHex
 }
 func (c *TalkController) PostAnswer() {
-	fmt.Println("PostAnswer!!!!")
-	c.Ctx.WriteString("回答完毕！！")
+	fmt.Println("回答ßßß!!!!")
+	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
+	defer s.SessionRelease(c.Ctx.ResponseWriter)
+	id, b := s.Get("login").(string)
+	if !b {
+		c.Ctx.Redirect(http.StatusFound, "/")
+		return
+	}
+	user := models.FindUser(id)
+	if user.IsNil() {
+		c.Ctx.Redirect(http.StatusFound, "/")
+		return
+	}
+	detail := c.GetString("detail")
+	tk := new(models.Talk)
+	tk2 := new(models.Talk)
+	tk.TalkNameHex = c.Ctx.Input.Param(":talkhex")
+	models.ORM().Where(tk).FirstOrInit(tk2)
+	tk2.AddComment(user.NickNameHex, detail)
+	tk2.Now = models.RandomUser().ID
+	models.ORM().Where(tk).Save(tk2)
+	//	talk := models.NewTalk()
+	//	talk.UserID = uuid.FromStringOrNil(id)
+	//	//talk.TalkNameHex = user.NickNameHex
+	//	talk.Now = models.RandomUser().ID
+	//	talk.AddComment(user.NickNameHex, detail)
+	//	talk.Create()
+	c.Ctx.Redirect(http.StatusFound, "/talk/mytalk")
+	//	fmt.Println("detail:", detail, id)
+	//	c.Ctx.WriteString(detail)
 }
 func (c *TalkController) New() {
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)

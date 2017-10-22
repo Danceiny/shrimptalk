@@ -23,8 +23,8 @@ func init() {
 		beego.NSRouter("/findall", &controllers.TalkController{}, "get:FindMyTalk"),
 		beego.NSRouter("/mytalk", &controllers.TalkController{}, "get:FindNowTalk"),
 		beego.NSRouter("/:id", &controllers.TalkController{}, "get:Detail"),
-		beego.NSRouter("/answer", &controllers.TalkController{}, "get:Answer"),
-		beego.NSRouter("/:id/answer", &controllers.TalkController{}, "post:PostAnswer"),
+		beego.NSRouter("/:id/answer", &controllers.TalkController{}, "get:Answer"),
+		beego.NSRouter("/:talkhex/:id/postanswer", &controllers.TalkController{}, "post:PostAnswer"),
 	)
 	//注册 namespace
 	beego.AddNamespace(ns)
