@@ -30,10 +30,10 @@ func connectString() string {
 	password := common.GetConfig("mysql::password")
 	database := common.GetConfig("mysql::database")
 	param := "?"
-	loc := common.GetConfig("mysql::loc")
-
+	loc := url.QueryEscape("Asia/Shanghai")
+	fmt.Println(host, port, user, password, database)
 	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s%sloc=%s&charset=utf8&parseTime=true",
-		user, password, host, port, database, param, url.QueryEscape("Asia/Shanghai"))
+		user, password, host, port, database, param, loc)
 }
 
 func CreateDB() *DB {
@@ -49,7 +49,7 @@ func ORM() *DB {
 	if db == nil || db.DB().Ping() != nil {
 		db = CreateDB()
 	}
-	db.LogMode(true)
+	//	db.LogMode(true)
 	return db
 }
 
