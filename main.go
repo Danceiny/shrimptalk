@@ -2,12 +2,14 @@ package main
 
 import (
 	"github.com/astaxie/beego"
-	//	"github.com/astaxie/beego/logs"
-
 	_ "github.com/lifeisgo/shrimptalk/routers"
+
+	//	"fmt"
+
+	_ "github.com/lifeisgo/shrimptalk/common"
 )
 
 func main() {
-	//	logs.SetLogger("console")
 	beego.Run()
+
 }

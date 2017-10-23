@@ -1,0 +1,38 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    background: url(../img/sky.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    -webkit-background-size: cover;
+    color: white;
+}
+
+a,p{
+    color: white;
+    text-decoration:none;
+}
+
+.title {
+    font-size: 1.8em;
+    border-bottom: dashed 1px white;
+}
+
+.list-table {
+    padding: 50px 0;
+    background-color: rgba(10, 10, 10, 0.77);
+    border: 2px ridge rgba(238, 238, 238, 0.13);
+    border-radius: 5px;
+    -moz-box-shadow: 0 -5px 10px 1px rgba(16, 16, 16, 0.57);
+    -webkit-box-shadow: 0 -5px 10px 1px rgba(16, 16, 16, 0.57);
+    box-shadow: 0 -5px 10px 1px rgba(16, 16, 16, 0.57);
+    border-bottom: none;
+    border-bottom-left-radius: initial;
+    border-bottom-right-radius: initial;
+}
+
+.btn {
+    background-color: #dca19e;
+}

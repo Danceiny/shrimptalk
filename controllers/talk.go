@@ -57,10 +57,7 @@ func (c *TalkController) FindNowTalk() {
 		c.Ctx.Redirect(http.StatusFound, "/")
 		return
 	}
-	//	id := "b5712894-b640-11e7-a2bd-acbc32a50041"
-	//	user := models.FindUser(id)
 	mytalks := models.FindByNow(id)
-	//	mytalks := models.FindByNow("8ea685af-b649-11e7-ac6e-acbc32a50041")
 	c.Data["Talks"] = mytalks
 
 }
@@ -85,10 +82,9 @@ func (c *TalkController) Answer() {
 	}
 	c.Data["NickName"] = user.NickNameHex
 	c.Data["talk"] = talk.ToComment()
-	//	c.Data["user"] = user
+
 }
 func (c *TalkController) PostAnswer() {
-	fmt.Println("回答ßßß!!!!")
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)
 	defer s.SessionRelease(c.Ctx.ResponseWriter)
 	id, b := s.Get("login").(string)
@@ -111,9 +107,6 @@ func (c *TalkController) PostAnswer() {
 	tk2.Now = next.ID
 	models.ORM().Where(tk).Save(tk2)
 	c.Data["Next"] = next
-	//	c.Ctx.Redirect(http.StatusFound, "/talk/mytalk")
-	//	fmt.Println("detail:", detail, id)
-	//	c.Ctx.WriteString(detail)
 }
 func (c *TalkController) New() {
 	s, _ := models.Session().SessionStart(c.Ctx.ResponseWriter, c.Ctx.Request)

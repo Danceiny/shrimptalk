@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+
+	"github.com/lifeisgo/shrimptalk/common"
 )
 
 type User struct {
@@ -17,7 +19,7 @@ func init() {
 
 func NewUser() *User {
 	user := new(User)
-	user.NickNameHex = GenerateHexID()
+	user.NickNameHex = common.GenerateHexID()
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 	return user

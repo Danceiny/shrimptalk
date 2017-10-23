@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/lifeisgo/shrimptalk/common"
 	"github.com/satori/go.uuid"
 )
 
@@ -31,7 +32,7 @@ func init() {
 func NewTalk() *Talk {
 	talk := new(Talk)
 	talk.Max = 0
-	talk.TalkNameHex = GenerateRandomString(32)
+	talk.TalkNameHex = common.GenerateRandomString(32)
 	return talk
 }
 
